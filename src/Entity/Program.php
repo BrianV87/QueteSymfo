@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProgramRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\String_;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
 class Program
@@ -20,7 +21,7 @@ class Program
     #[ORM\Column(type: Types::TEXT)]
     private ?string $synopsis = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $poster = null;
 
     #[ORM\ManyToOne]
@@ -61,7 +62,7 @@ class Program
         return $this->poster;
     }
 
-    public function setPoster(string $poster): self
+    public function setPoster(?string $poster): self
     {
         $this->poster = $poster;
 
