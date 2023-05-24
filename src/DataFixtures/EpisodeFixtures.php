@@ -13,6 +13,7 @@ use Faker\Generator;
 class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 {
     private Generator $faker;
+    public static int $numberOfEpisodes = 1;
 
     public function __construct()
     {
@@ -22,6 +23,7 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $seasons = $manager->getRepository(Season::class)->findAll();
+
         foreach ($seasons as $season) {
             for ($i = 0; $i < 20; $i++) {
                 $episode = new Episode();
@@ -30,12 +32,15 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
                     ->setNumber($i + 1)
                     ->setSeason($season);
                 $manager->persist($episode);
+                $this->addReference("episode_" . self::$numberOfEpisodes, $episode);
+                self::$numberOfEpisodes++;
             }
         }
+
         $manager->flush();
     }
 
-    public function getDependencies() :array
+    public function getDependencies(): array
     {
         return [
             SeasonFixtures::class,

@@ -3,8 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Program;
-use App\Entity\Season;
-use App\Entity\Episode;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -14,6 +12,7 @@ use Faker\Generator;
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
     private Generator $faker;
+    public static int $numberOfPrograms = 1;
 
     public function __construct()
     {
@@ -26,6 +25,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
         foreach($categories as $categoryName) {
             for ($i = 0 ; $i <= 5 ; $i ++) {
+
                 $program = new Program();
                 $program
                     ->setTitle($this->faker->words(3, true))
@@ -35,30 +35,8 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
                     ->setYear($this->faker->year)
                     ->setCategory($this->getReference('category_'.$categoryName));
 
-                // Create 5 seasons for each program
-                for ($j = 1; $j <= 5; $j++) {
-                    $season = new Season();
-                    $season
-                        ->setNumber($j)
-                        ->setYear($this->faker->year)
-                        ->setDescription($this->faker->text)
-                        ->setProgram($program); // Set the reference to the program
-
-                    // Create 20 episodes for each season
-                    for ($k = 1; $k <= 20; $k++) {
-                        $episode = new Episode();
-                        $episode
-                            ->setTitle($this->faker->words(3, true))
-                            ->setNumber($k)
-                            ->setSynopsis($this->faker->text)
-                            ->setSeason($season); // Set the reference to the season
-
-                        $manager->persist($episode);
-                    }
-
-                    $manager->persist($season);
-                }
-
+                $this->addReference('program_' . self::$numberOfPrograms, $program);
+                self::$numberOfPrograms++;
                 $manager->persist($program);
             }
         }

@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Season;
-use App\Entity\Program;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -13,6 +12,7 @@ use Faker\Generator;
 class SeasonFixtures extends Fixture implements DependentFixtureInterface
 {
     private Generator $faker;
+    public static int $numberOfSeason = 1;
 
     public function __construct()
     {
@@ -21,17 +21,17 @@ class SeasonFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $programs = $manager->getRepository(Program::class)->findAll();
-        foreach ($programs as $program) {
-            for ($i = 0; $i < 5; $i++) {
+        for ($i = 1; $i<ProgramFixtures::$numberOfPrograms; $i++) {
+            for ($j = 0; $j < 5; $j++) {
                 $season = new Season();
                 $season->setYear($this->faker->year)
                     ->setDescription($this->faker->paragraph)
-                    ->setProgram($program)
-                    ->setNumber($i + 1);
+                    ->setProgram($this->getReference('program_' . $i))
+                    ->setNumber($j + 1);
 
+                self::$numberOfSeason++;
                 $manager->persist($season);
-                $this->addReference("season{$program->getId()}_{$i}", $season);
+                $this->addReference("season_" . self::$numberOfSeason, $season);
             }
         }
         $manager->flush();
