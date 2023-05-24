@@ -3,18 +3,21 @@
 {% block title %}Catégorie {{ category.name }}{% endblock %}
 
 {% block body %}
-    <div>
-        <h1>{{ category.name }}</h1>
-        {% for program in programs %}
-            <div>
-                <h2>{{ program.id }}. {{ program.title }}</h2>
-                <p>{{ program.synopsis }}</p>
-                <a href="{{ path("program_show", { id: program.id }) }}">Voir la fiche</a>
-            </div>
-        {% endfor %}
+    <div class="container mt-4">
+        <h1 class="text-center text-white">{{ category.name }}</h1>
+        <div class="row mt-4">
+            {% for program in programs %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ program.id }}. {{ program.title }}</h2>
+                            <p class="card-text">{{ program.synopsis }}</p>
+                            <a href="{{ path("program_show", { id: program.id }) }}" class="btn btn-primary">Voir la fiche</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{{ path('category_index') }}" class="btn btn-secondary mt-4">Retour à la liste des catégories</a>
     </div>
-
-    <a href="{{ path('category_index') }}">
-        Retour à la liste des categories
-    </a>
 {% endblock %}

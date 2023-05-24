@@ -1,23 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Saison : {{ season.number }}{% endblock %}
-
 {% block body %}
-    <h1>Saison {{ season.number }}</h1>
-    <h2>{{ season.description }}</h2>
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center ">Saison {{ season.number }}</h1>
+        <h2 class="mb-4 ">{{ season.description }}</h2>
 
-    <h3>Episodes</h3>
-    <ul>
-        {% for episode in season.episodes %}
-            <li>
-                Épisode {{ episode.number }} - {{ episode.title }}
-            </li>
-        {% else %}
-            <li>Aucun épisode pour cette saison</li>
-        {% endfor %}
-    </ul>
+        <h3 class="mb-3">Épisodes</h3>
+        <div class="row">
+            {% for episode in season.episodes %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Épisode {{ episode.number }} - {{ episode.title }}</h5>
+                            <a href="{{ path('episode_show', {id: episode.id}) }}" class="btn btn-primary">Voir l'épisode</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="col">Aucun épisode pour cette saison</p>
+            {% endfor %}
+        </div>
 
-    <a href="{{ path('program_show', {id: season.program.id}) }}">
-        Retour au programme
-    </a>
+        <a href="{{ path('program_show', {id: season.program.id}) }}" class="btn btn-secondary mt-4">Retour au programme</a>
+    </div>
 {% endblock %}
