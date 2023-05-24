@@ -3,6 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Program;
+use App\Entity\Season;
+use App\Entity\Episode;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -20,46 +22,50 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        $categories = ['Horreur', 'Action', 'Animation', 'Aventure'];
 
-        for ($i = 0 ; $i <= 5 ; $i ++) {
-            $program = new Program();
-            $program->setTitle($this->faker->words(3, true));
-            $program->setSynopsis($this->faker->words(6, true));
-            $program->setPoster($this->faker->imageUrl);
-            $program->setCategory($this->getReference('category_Horreur'));
-            $manager->persist($program);
-        }
+        foreach($categories as $categoryName) {
+            for ($i = 0 ; $i <= 5 ; $i ++) {
+                $program = new Program();
+                $program
+                    ->setTitle($this->faker->words(3, true))
+                    ->setSynopsis($this->faker->words(6, true))
+                    ->setPoster($this->faker->imageUrl)
+                    ->setCountry($this->faker->country)
+                    ->setYear($this->faker->year)
+                    ->setCategory($this->getReference('category_'.$categoryName));
 
-        for ($i = 0 ; $i <= 5 ; $i ++) {
-            $program = new Program();
-            $program->setTitle($this->faker->words(3, true));
-            $program->setSynopsis($this->faker->words(6, true));
-            $program->setPoster($this->faker->imageUrl);
-            $program->setCategory($this->getReference('category_Action'));
-            $manager->persist($program);
-        }
+                // Create 5 seasons for each program
+                for ($j = 1; $j <= 5; $j++) {
+                    $season = new Season();
+                    $season
+                        ->setNumber($j)
+                        ->setYear($this->faker->year)
+                        ->setDescription($this->faker->text)
+                        ->setProgram($program); // Set the reference to the program
 
-        for ($i = 0 ; $i <= 5 ; $i ++) {
-            $program = new Program();
-            $program->setTitle($this->faker->words(3, true));
-            $program->setSynopsis($this->faker->words(6, true));
-            $program->setPoster($this->faker->imageUrl);
-            $program->setCategory($this->getReference('category_Animation'));
-            $manager->persist($program);
-        }
+                    // Create 20 episodes for each season
+                    for ($k = 1; $k <= 20; $k++) {
+                        $episode = new Episode();
+                        $episode
+                            ->setTitle($this->faker->words(3, true))
+                            ->setNumber($k)
+                            ->setSynopsis($this->faker->text)
+                            ->setSeason($season); // Set the reference to the season
 
-        for ($i = 0 ; $i <= 5 ; $i ++) {
-            $program = new Program();
-            $program->setTitle($this->faker->words(3, true));
-            $program->setSynopsis($this->faker->words(6, true));
-            $program->setPoster($this->faker->imageUrl);
-            $program->setCategory($this->getReference('category_Aventure'));
-            $manager->persist($program);
+                        $manager->persist($episode);
+                    }
+
+                    $manager->persist($season);
+                }
+
+                $manager->persist($program);
+            }
         }
 
         $manager->flush();
-
     }
+
     public function getDependencies() :array
     {
         return [
