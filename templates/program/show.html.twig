@@ -17,9 +17,9 @@
 
 		<h2 class="mt-5">Saisons</h2>
 		<ul class="list-group">
-			{% for season in program.seasons %}
+			{% for season in program.seasons|sort((a, b) => a.number <=> b.number) %}
 				<li class="list-group-item">
-					<a href="{{ path('season_show', {id: season.id}) }}">
+					<a href="{{ path('app_season_show', {id: season.id}) }}">
 						Saison {{ season.number }}
 					</a>
 				</li>
@@ -28,6 +28,6 @@
 			{% endfor %}
 		</ul>
 
-		<a href="{{ path('category_show', { 'categoryName': program.category.name }) }}" class="btn btn-secondary mt-5">Retour à la catégorie</a>
+		<a href="{{ path('category_show', { 'categoryName': program.category.name }) }}" class="btn btn-secondary mt-5">Retour aux programmes</a>
 	</div>
 {% endblock %}

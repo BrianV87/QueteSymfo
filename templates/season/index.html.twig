@@ -1,7 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SeasonController{% endblock %}
+{% block title %}Season index{% endblock %}
 
 {% block body %}
+    <h1>Season index</h1>
 
+    <div class="row">
+        {% for season in seasons %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ season.number }} ({{ season.year }})</h5>
+                        <p class="card-text">{{ season.description }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('app_season_show', {'id': season.id}) }}" class="btn btn-primary">Voir</a>
+                        <a href="{{ path('app_season_edit', {'id': season.id}) }}" class="btn btn-secondary">Modifier</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-md-12">
+                <div class="alert alert-warning" role="alert">
+                    No records found
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <a href="{{ path('app_season_new') }}" class="btn btn-success mt-3">Nouvelle saison</a>
 {% endblock %}
