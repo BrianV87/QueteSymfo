@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Épisode {{ episode.number }}: {{ episode.title }}{% endblock %}
+{% block title %}
+    Épisode {{ episode.number }} : {{ episode.title }} - {{ episode.season.program.title }}
+{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>{{ episode.title }}</h1>
-        <p>Numéro de l'épisode: {{ episode.number }}</p>
-        <p>Synopsis: {{ episode.synopsis }}</p>
-        <a href="{{ path('season_show', { 'id': episode.season.id }) }}" class="btn btn-secondary mt-5">Retour à la saison</a>
+        <h1>{{ episode.season.program.title }}</h1>
+        <h2>Saison {{ episode.season.number }}</h2>
+        <h3>Épisode {{ episode.number }} : {{ episode.title }}</h3>
+        <p>{{ episode.synopsis }}</p>
+        <a href="{{ path('program_season_show', { 'program': episode.season.program.id, 'season': episode.season.id }) }}" class="btn btn-secondary mt-5">Retour à la saison</a>
     </div>
 {% endblock %}
