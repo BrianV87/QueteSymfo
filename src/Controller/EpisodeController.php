@@ -34,7 +34,7 @@ class EpisodeController extends AbstractController
             return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('episode/new.html.twig', [
+        return $this->render('episode/new.html.twig', [
             'episode' => $episode,
             'form' => $form,
         ]);
@@ -56,11 +56,13 @@ class EpisodeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $episodeRepository->save($episode, true);
+            $this->addFlash('success', 'L\'épisode a été ajouté avec succès.');
+
 
             return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('episode/edit.html.twig', [
+        return $this->render('episode/edit.html.twig', [
             'episode' => $episode,
             'form' => $form,
         ]);
@@ -71,6 +73,8 @@ class EpisodeController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$episode->getId(), $request->request->get('_token'))) {
             $episodeRepository->remove($episode, true);
+            $this->addFlash('danger', 'L\'épisode a été supprimé avec succès.');
+
         }
 
         return $this->redirectToRoute('app_episode_index', [], Response::HTTP_SEE_OTHER);

@@ -1,1 +1,11 @@
-@import "bootstrap/scss/bootstrap";
+* {
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+}
+footer {
+  margin-top: auto;
+}
+@import "variable.scss";
+@import "~bootswatch/dist/darkly/bootstrap.css";

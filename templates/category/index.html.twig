@@ -5,13 +5,14 @@
 {% block body %}
     <div class="container mt-4">
         <h1 class="mb-4 text-center text-white">Toutes les catégories :</h1>
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4">
             {% for category in categories %}
                 <div class="col-md-4">
-                    <div class="card mb-4">
+                    <div class="card h-100 d-flex flex-column">
+                        <img src="https://fakeimg.pl/200x100/?retina=1&text=こんにちは&font=noto" class="card-img-top" alt="{{ category.name }}">
                         <div class="card-body">
-                            <h2 class="card-title">{{ loop.index }} / {{ category.name }}</h2>
-                            <a href="{{ path("category_show", { categoryName: category.name }) }}" class="btn btn-primary">Voir la liste des séries</a>
+                            <h2 class="card-title"> {{ category.name }}</h2>
+                            <a href="{{ path("category_show", { categoryName: category.name }) }}" class="btn btn-outline-light">Voir la liste des séries</a>
                         </div>
                     </div>
                 </div>

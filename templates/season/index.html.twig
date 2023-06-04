@@ -1,32 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Season index{% endblock %}
+{% block title %}Season{% endblock %}
 
 {% block body %}
     <h1>Season index</h1>
 
-    <div class="row">
-        {% for season in seasons %}
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ season.number }} ({{ season.year }})</h5>
-                        <p class="card-text">{{ season.description }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="{{ path('app_season_show', {'id': season.id}) }}" class="btn btn-primary">Voir</a>
-                        <a href="{{ path('app_season_edit', {'id': season.id}) }}" class="btn btn-secondary">Modifier</a>
+    <section class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-4">
+            {% for season in seasons %}
+                <div class="col-md-3">
+                    <div class="card h-100 d-flex flex-column">
+                            <img src="https://fakeimg.pl/200x100/?retina=1&text={{ season.number }}" class="card-img-top" alt="Image de la saison {{ season.number }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ season.number }} ({{ season.year }})</h5>
+                            <p class="card-text flex-grow-1 d-none d-lg-block">{{ season.description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ path('app_season_show', {'id': season.id}) }}" class="btn btn-primary">Voir</a>
+                            <a href="{{ path('app_season_edit', {'id': season.id}) }}" class="btn btn-secondary">Modifier</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% else %}
-            <div class="col-md-12">
-                <div class="alert alert-warning" role="alert">
-                    No records found
+            {% else %}
+                <div class="col-md-12">
+                    <div class="alert alert-warning" role="alert">
+                        No records found
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+        <a href="{{ path('app_season_new') }}" class="btn btn-light mt-4">Nouvelle saison </a>
+    </section>
 
-    <a href="{{ path('app_season_new') }}" class="btn btn-success mt-3">Nouvelle saison</a>
+
 {% endblock %}

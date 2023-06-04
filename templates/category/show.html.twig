@@ -5,13 +5,14 @@
 {% block body %}
     <div class="container mt-4">
         <h1 class="text-center">{{ category.name }}</h1>
-        <div class="row mt-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
             {% for program in programs %}
                 <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-body">
+                    <div class="card h-100 d-flex flex-column">
+                        <img src="https://fakeimg.pl/350x200/?text={{ category.name }}  &font=lobster" alt="{{ program.title }} {{ category.name }} ">
+                        <div class="card-body d-flex flex-column">
                             <h2 class="card-title">{{ program.id }}. {{ program.title }}</h2>
-                            <p class="card-text">{{ program.synopsis }}</p>
+                            <p class="card-text flex-grow-1 d-none d-lg-block">{{ program.synopsis }}</p>
                             <a href="{{ path("program_show", { id: program.id }) }}" class="btn btn-primary">Voir la fiche</a>
                         </div>
                     </div>

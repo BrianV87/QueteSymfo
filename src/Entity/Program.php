@@ -8,8 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\String_;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
+#[UniqueEntity(fields: ['title'], message: "Ce titre existe déjà !")]
 class Program
 {
     #[ORM\Id]
@@ -18,9 +21,16 @@ class Program
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message:"Le synopsis ne peut pas être vide")]
+    #[Assert\Regex(
+        pattern: "/plus belle la vie/i",
+        message: "On parle de vrais séries ici",
+        match: false
+    )]
     private ?string $synopsis = null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]

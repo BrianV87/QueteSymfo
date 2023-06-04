@@ -9,14 +9,16 @@ use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(ProgramRepository $programRepository): Response
+    public function index(ProgramRepository $programRepository, RequestStack $requestStack): Response
     {
+        $session = $requestStack->getSession();
         $programs = $programRepository->findAll();
         return $this->render('program/index.html.twig', [
             'programs' => $programs,
@@ -34,8 +36,9 @@ class ProgramController extends AbstractController
         if ($form->isSubmitted())
         {
             $programRepository->save($program, true);
+            $this->addFlash('success', 'La série a été ajouté avec succès.');
 
-            return $this->redirectToRoute('category_index');
+            return $this->redirectToRoute('program_index');
         }
 
         // Render the form
